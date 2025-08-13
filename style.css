@@ -1,19 +1,19 @@
-/* page background to blend with your brand */
+/* Page background (kept to blend with your brand red if the iframe shows it) */
 html, body {
   height: 100%;
   margin: 0;
-  background: #c22a1f;   /* brand red */
+  background: #c22a1f;
   color: #fff;
   font-family: Arial, Helvetica, sans-serif;
 }
 
-/* container that the iframe will show */
+/* IMPORTANT: no padding-bottom trick — fixed, tall container instead */
 .map-wrap {
-  position: relative;   /* anchor for the badge */
+  position: relative;      /* anchor for the badge */
   width: 100%;
-  height: 100vh;        /* fill the iframe height */
-  max-height: 900px;    /* sensible cap for desktop */
-  min-height: 560px;    /* keep it tall */
+  height: 88vh;            /* tall on desktop & mobile */
+  max-height: 1000px;      /* sensible cap */
+  min-height: 560px;       /* ensure it never gets short */
 }
 
 /* Leaflet map area */
@@ -25,7 +25,7 @@ html, body {
   overflow: hidden;
 }
 
-/* “Last updated” overlay badge */
+/* “Last updated” overlay badge INSIDE the map */
 #last-updated {
   position: absolute;
   left: 50%;
@@ -41,11 +41,7 @@ html, body {
   backdrop-filter: blur(2px);
 }
 
-/* extra height on small screens */
-@media (max-width: 768px) {
-  .map-wrap {
-    height: 88vh;
-    max-height: 1000px;
-    min-height: 560px;
-  }
+/* Slightly shorter on very large desktops so it doesn’t dominate */
+@media (min-width: 1400px) {
+  .map-wrap { height: 84vh; }
 }
