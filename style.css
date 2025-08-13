@@ -1,43 +1,51 @@
-/* page & background to match your site */
+/* page background to blend with your brand */
 html, body {
   height: 100%;
   margin: 0;
-  background: #c22a1f;  /* your brand red */
+  background: #c22a1f;   /* brand red */
   color: #fff;
-  font-family: Arial, sans-serif;
+  font-family: Arial, Helvetica, sans-serif;
 }
 
-/* wrapper so the map fills the iframe cleanly */
+/* container that the iframe will show */
 .map-wrap {
-  position: relative;
+  position: relative;   /* anchor for the badge */
   width: 100%;
-  height: 100vh;           /* fill the iframe height */
-  max-height: 700px;       /* keep it reasonable on desktop */
+  height: 100vh;        /* fill the iframe height */
+  max-height: 900px;    /* sensible cap for desktop */
+  min-height: 560px;    /* keep it tall */
 }
 
-/* the Leaflet map itself */
+/* Leaflet map area */
 #map {
   width: 100%;
   height: 100%;
   border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0,0,0,.3);
+  box-shadow: 0 6px 20px rgba(0,0,0,.25);
+  overflow: hidden;
 }
 
-/* overlay badge so it doesn't change layout height */
+/* “Last updated” overlay badge */
 #last-updated {
   position: absolute;
   left: 50%;
   bottom: 10px;
   transform: translateX(-50%);
   background: rgba(0,0,0,.45);
+  color: #fff;
   padding: 6px 10px;
   border-radius: 8px;
   font-size: 12px;
   line-height: 1;
+  z-index: 500;
   backdrop-filter: blur(2px);
 }
 
-/* smaller screens: give a bit more vertical room */
-@media (max-width: 640px) {
-  .map-wrap { max-height: 80vh; }
+/* extra height on small screens */
+@media (max-width: 768px) {
+  .map-wrap {
+    height: 88vh;
+    max-height: 1000px;
+    min-height: 560px;
+  }
 }
