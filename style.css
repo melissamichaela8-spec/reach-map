@@ -1,13 +1,43 @@
-body {
+/* page & background to match your site */
+html, body {
+  height: 100%;
   margin: 0;
+  background: #c22a1f;  /* your brand red */
+  color: #fff;
   font-family: Arial, sans-serif;
-  background-color: #c22a1f;
-  color: white;
 }
 
+/* wrapper so the map fills the iframe cleanly */
+.map-wrap {
+  position: relative;
+  width: 100%;
+  height: 100vh;           /* fill the iframe height */
+  max-height: 700px;       /* keep it reasonable on desktop */
+}
+
+/* the Leaflet map itself */
 #map {
   width: 100%;
-  height: 500px;
+  height: 100%;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,.3);
+}
+
+/* overlay badge so it doesn't change layout height */
+#last-updated {
+  position: absolute;
+  left: 50%;
+  bottom: 10px;
+  transform: translateX(-50%);
+  background: rgba(0,0,0,.45);
+  padding: 6px 10px;
   border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+  font-size: 12px;
+  line-height: 1;
+  backdrop-filter: blur(2px);
+}
+
+/* smaller screens: give a bit more vertical room */
+@media (max-width: 640px) {
+  .map-wrap { max-height: 80vh; }
 }
