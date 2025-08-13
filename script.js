@@ -1,4 +1,4 @@
-// Expose map globally (handy if you ever add a small style add-on)
+// Keep map global (handy for future tweaks)
 var map;
 
 // Your published Google Sheet CSV URL:
@@ -12,35 +12,35 @@ document.addEventListener("DOMContentLoaded", function () {
     minZoom: 2
   });
 
-  // Base tiles
+  // Base layer
   L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
     maxZoom: 18,
     attribution: "&copy; OpenStreetMap contributors"
   }).addTo(map);
 
-  // Fetch and parse CSV
+  // Load CSV and render markers
   Papa.parse(sheetUrl, {
     download: true,
     header: true,
     skipEmptyLines: true,
-    complete: results => {
+    complete: (results) => {
       const rows = results.data || [];
       const markers = [];
       let latestDate = null;
 
-      rows.forEach(row => {
-        // Expect columns: Country, Platform, Lat, Lng, Updated
+      rows.forEach((row) => {
+        // Expected columns: Country, Platform, Lat, Lng, Updated
         const lat = parseFloat((row.Lat || "").toString().trim());
         const lng = parseFloat((row.Lng || "").toString().trim());
         const country = (row.Country || "").toString().trim();
         const platform = (row.Platform || "").toString().trim();
 
         if (!isNaN(lat) && !isNaN(lng)) {
-          const m = L.marker([lat, lng]).addTo(map);
-          m.bindPopup(
+          const marker = L.marker([lat, lng]).addTo(map);
+          marker.bindPopup(
             `<b>${country || "Unknown"}</b>${platform ? "<br>" + platform : ""}`
           );
-          markers.push(m);
+          markers.push(marker);
         }
 
         if (row.Updated) {
@@ -51,15 +51,15 @@ document.addEventListener("DOMContentLoaded", function () {
         }
       });
 
-      // Auto-fit to all markers
+      // Auto-fit to all markers so nothing’s cropped
       if (markers.length) {
         const group = L.featureGroup(markers);
         map.fitBounds(group.getBounds(), { padding: [30, 30] });
       } else {
-        map.setView([20, 0], 2); // fallback if no data
+        map.setView([20, 0], 2);
       }
 
-      // Set the “Last updated” badge
+      // Update the in-map date badge
       const stamp = latestDate || new Date();
       const badge = document.getElementById("last-updated");
       if (badge) {
@@ -72,7 +72,7 @@ document.addEventListener("DOMContentLoaded", function () {
           });
       }
     },
-    error: err => {
+    error: (err) => {
       console.error("CSV load error:", err);
       const badge = document.getElementById("last-updated");
       if (badge) badge.textContent = "Last updated: (data source error)";
